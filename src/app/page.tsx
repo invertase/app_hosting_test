@@ -4,10 +4,10 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+const initialSrc = "https://us-central1-dev-extensions-testing.cloudfunctions.net/ext-image-processing-api-s77f-handler/process?operations=%5B%7B%22operation%22%3A%22input%22%2C%22type%22%3A%22path%22%2C%22path%22%3A%22%2Fdog.png%22%7D%2C%7B%22operation%22%3A%22grayscale%22%7D%2C%7B%22operation%22%3A%22output%22%2C%22format%22%3A%22webp%22%7D%5D";
+
 export default function Home() {
-  const [src, setSrc] = useState(
-    "https://us-central1-dev-extensions-testing.cloudfunctions.net/ext-image-processing-api-txm0-handler/process?operations=%5B%7B%22operation%22%3A%22input%22%2C%22type%22%3A%22path%22%2C%22path%22%3A%22%2Fnext.svg%22%7D%2C%7B%22operation%22%3A%22grayscale%22%7D%2C%7B%22operation%22%3A%22output%22%2C%22format%22%3A%22webp%22%7D%5D"
-  );
+  const [src, setSrc] = useState(initialSrc);
   const [inputValue, setInputValue] = useState(src);
 
   useEffect(() => {
