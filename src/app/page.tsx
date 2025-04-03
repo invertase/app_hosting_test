@@ -1,55 +1,63 @@
-import Link from "next/link";
+"use client";
+// This is a client component
+
+import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Home() {
-  const message = process.env["MESSAGE"] || "Hello!";
-  return (
-    <main className="content">
-      <h1 className="heading">Next.js on Firebase App Hosting</h1>
-      <p>{message}</p>
+  const [src, setSrc] = useState(
+    "https://us-central1-dev-extensions-testing.cloudfunctions.net/ext-image-processing-api-txm0-handler/process?operations=%5B%7B%22operation%22%3A%22input%22%2C%22type%22%3A%22path%22%2C%22path%22%3A%22%2Fnext.svg%22%7D%2C%7B%22operation%22%3A%22grayscale%22%7D%2C%7B%22operation%22%3A%22output%22%2C%22format%22%3A%22webp%22%7D%5D"
+  );
+  const [inputValue, setInputValue] = useState(src);
 
-      <section className="features">
-        <article className="card">
-          <h2>Scalable, serverless backends</h2>
-          <p>
-            Dynamic content is served by{" "}
-            <Link
-              href="https://cloud.google.com/run/docs/overview/what-is-cloud-run"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Cloud Run
-            </Link>
-            , a fully managed container that scales up and down with demand.
-            Visit{" "}
-            <Link href="/ssr">
-              <code>/ssr</code>
-            </Link>{" "}
-            and{" "}
-            <Link href="/ssr/streaming">
-              <code>/ssr/streaming</code>
-            </Link>{" "}
-            to see the server in action.
-          </p>
-        </article>
-        <article className="card">
-          <h2>Global CDN</h2>
-          <p>
-            Cached content is served by{" "}
-            <Link
-              href="https://cloud.google.com/cdn/docs/overview"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Google Cloud CDN
-            </Link>
-            , a fast and secure way to host cached content globally. Visit
-            <Link href="/ssg">
-              {" "}
-              <code>/ssg</code>
-            </Link>{" "}
-          </p>
-        </article>
-      </section>
-    </main>
+  useEffect(() => {
+    console.log("Image URL:", src);
+  }, [src]);
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    setSrc(inputValue);
+  };
+
+  return (
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+        <div className="bg-white">
+          <Image
+            className="dark:invert"
+            unoptimized={true}
+            src={src}
+            alt="Next.js logo"
+            width={180}
+            height={38}
+            priority
+          />
+        </div>
+
+        <form onSubmit={handleSubmit} className="w-full max-w-lg">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="image-src" className="text-sm font-medium">
+              Image Source URL
+            </label>
+            <div className="flex gap-2">
+              <input
+                id="image-src"
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter image URL"
+              />
+              <button
+                type="submit"
+                className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </form>
+      </main>
+    </div>
   );
 }
